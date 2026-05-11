@@ -316,13 +316,18 @@ function renderLive(){
     '</div>'+
   '</div></div>';
 
-  html += '<div style="font-family:\'Bebas Neue\',serif;font-size:14px;color:#7080a0;letter-spacing:2px;margin-bottom:12px">CURRENT ROUNDS</div>';
-  html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">';
-  html += '<div><div style="font-family:\'Bebas Neue\',serif;font-size:16px;color:#c9a227;letter-spacing:2px;margin-bottom:8px">ROUND '+curR+' · SINGLES</div>';
-  cS.forEach(function(m){ html += matchCard(getMatch(SINGLES,m.id), state.results[m.id], false); });
-  html += '</div><div><div style="font-family:\'Bebas Neue\',serif;font-size:16px;color:#c9a227;letter-spacing:2px;margin-bottom:8px">ROUND '+curR+' · DOUBLES</div>';
-  cD.forEach(function(m){ html += matchCard(getMatch(DOUBLES,m.id), state.results[m.id], true); });
-  html += '</div></div>';
+  var rdLive = state.releasedDays!=null?state.releasedDays:1;
+  if(rdLive===0){
+    html += '<div class="locked-msg"><div style="font-size:32px;margin-bottom:12px">🔒</div><div style="font-family:\'Bebas Neue\',serif;font-size:20px;letter-spacing:3px;margin-bottom:8px">PAIRINGS NOT YET RELEASED</div><div style="font-size:13px">The matchups will be announced by the organizers.</div></div>';
+  } else {
+    html += '<div style="font-family:\'Bebas Neue\',serif;font-size:14px;color:#7080a0;letter-spacing:2px;margin-bottom:12px">CURRENT ROUNDS</div>';
+    html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">';
+    html += '<div><div style="font-family:\'Bebas Neue\',serif;font-size:16px;color:#c9a227;letter-spacing:2px;margin-bottom:8px">ROUND '+curR+' · SINGLES</div>';
+    cS.forEach(function(m){ html += matchCard(getMatch(SINGLES,m.id), state.results[m.id], false); });
+    html += '</div><div><div style="font-family:\'Bebas Neue\',serif;font-size:16px;color:#c9a227;letter-spacing:2px;margin-bottom:8px">ROUND '+curR+' · DOUBLES</div>';
+    cD.forEach(function(m){ html += matchCard(getMatch(DOUBLES,m.id), state.results[m.id], true); });
+    html += '</div></div>';
+  }
 
   document.getElementById('view-live').innerHTML = html;
 }
