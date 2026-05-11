@@ -192,7 +192,7 @@ db.ref('shufflecup2026').on('value', function(snap) {
     state = val;
     if(!state.results) state.results = {};
     if(!state.pairings) state.pairings = {};
-    if(!state.releasedDays) state.releasedDays = 1;
+    if(state.releasedDays==null) state.releasedDays = 1;
   } else {
     state = {results:{}, pairings:{}, releasedDays:1};
   }
