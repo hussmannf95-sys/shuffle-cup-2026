@@ -147,7 +147,11 @@ var FB_CONFIG = {
   messagingSenderId: "246377748256",
   appId:             "1:246377748256:web:071b8fbe41a37d0831a945"
 };
-var ADMIN_PW = 'hfno26';
+var ADMIN_PW = 'hfno26'; // Fallback
+
+// ═══════════════════════════════════════════════════════
+// CONFIG – Admin-PIN aus Firebase laden
+// ═══════════════════════════════════════════════════════
 
 // ═══════════════════════════════════════════════════════
 // DATA
@@ -186,6 +190,9 @@ var adminDay = 1;
 // ═══════════════════════════════════════════════════════
 firebase.initializeApp(FB_CONFIG);
 var db = firebase.database();
+  db.ref('shufflecup2026_betting/config/adminPin').on('value', snap => {
+  if (snap.val()) ADMIN_PW = snap.val();
+});
 db.ref('shufflecup2026').on('value', function(snap) {
   var val = snap.val();
   if(val){
