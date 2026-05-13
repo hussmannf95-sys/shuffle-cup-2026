@@ -6,6 +6,9 @@
 <title>The Shuffle Cup 2026 – LIVE</title>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+<!-- NEU: -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;600&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -189,6 +192,7 @@ var adminDay = 1;
 // FIREBASE
 // ═══════════════════════════════════════════════════════
 firebase.initializeApp(FB_CONFIG);
+  firebase.auth().signInAnonymously().catch(console.error);
 var db = firebase.database();
   db.ref('shufflecup2026_betting/config/adminPin').on('value', snap => {
   if (snap.val()) ADMIN_PW = snap.val();
