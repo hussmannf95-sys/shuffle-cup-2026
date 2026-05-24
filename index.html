@@ -214,7 +214,11 @@ db.ref('shufflecup2026').on('value', function(snap) {
 });
 firebase.auth().onAuthStateChanged(function(user) {
   if (!user) {
-    firebase.auth().signInAnonymously().catch(console.error);
+    setTimeout(function() {
+      if (!firebase.auth().currentUser) {
+        firebase.auth().signInAnonymously().catch(console.error);
+      }
+    }, 2000);
   }
   currentUser = user;
   authReady = true;
