@@ -106,6 +106,8 @@ select option{background:#0e1325}
 <div class="overlay hidden" id="login-overlay">
   <div class="modal">
     <div style="font-family:'Bebas Neue',serif;font-size:22px;color:#c9a227;letter-spacing:3px;margin-bottom:20px">ADMIN ACCESS</div>
+    <input type="email" id="email-input" placeholder="E-Mail"
+  style="width:100%;padding:10px 14px;border-radius:6px;background:#0a0e1a;border:1px solid #1c2540;color:#e8eaf0;font-size:14px;box-sizing:border-box;margin-bottom:8px;outline:none"/>
     <input type="password" id="pw-input" placeholder="Enter password" onkeydown="if(event.key==='Enter')tryLogin()"
       style="width:100%;padding:10px 14px;border-radius:6px;background:#0a0e1a;border:1px solid #1c2540;color:#e8eaf0;font-size:14px;box-sizing:border-box;margin-bottom:12px;outline:none"/>
     <div style="display:flex;gap:8px">
@@ -150,7 +152,7 @@ var FB_CONFIG = {
   messagingSenderId: "246377748256",
   appId:             "1:246377748256:web:071b8fbe41a37d0831a945"
 };
-var ADMIN_PW = 'hfno26'; // Fallback
+
 
 // ═══════════════════════════════════════════════════════
 // CONFIG – Admin-PIN aus Firebase laden
@@ -194,9 +196,7 @@ var adminDay = 1;
 firebase.initializeApp(FB_CONFIG);
   firebase.auth().signInAnonymously().catch(console.error);
 var db = firebase.database();
-  db.ref('shufflecup2026_betting/config/adminPin').on('value', snap => {
-  if (snap.val()) ADMIN_PW = snap.val();
-});
+
 db.ref('shufflecup2026').on('value', function(snap) {
   var val = snap.val();
   if(val){
@@ -429,19 +429,27 @@ function showTab(t){
 // ═══════════════════════════════════════════════════════
 function openAdmin(){
   document.getElementById('login-overlay').classList.remove('hidden');
-  document.getElementById('pw-input').value='';
+ document.getElementById('pw-input').value='';
+document.getElementById('email-input').value='';
 }
 function tryLogin(){
-  if(document.getElementById('pw-input').value===ADMIN_PW){
-    document.getElementById('login-overlay').classList.add('hidden');
-    adminLocal = JSON.parse(JSON.stringify(state));
-    document.getElementById('admin-panel').classList.remove('hidden');
-    renderAdmin();
-  } else { alert('Wrong password'); }
+  var email = document.getElementById('email-input').value;
+  var pw = document.getElementById('pw-input').value;
+  firebase.auth().signInWithEmailAndPassword(email, pw)
+    .then(function(){
+      document.getElementById('login-overlay').classList.add('hidden');
+      adminLocal = JSON.parse(JSON.stringify(state));
+      document.getElementById('admin-panel').classList.remove('hidden');
+      renderAdmin();
+    })
+    .catch(function(err){
+      alert('Login fehlgeschlagen: ' + err.message);
+    });
 }
 function closeAdmin(){
   document.getElementById('login-overlay').classList.add('hidden');
   document.getElementById('admin-panel').classList.add('hidden');
+  firebase.auth().signOut();
 }
 function saveAndClose(){
   state = JSON.parse(JSON.stringify(adminLocal));
