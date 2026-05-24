@@ -215,6 +215,7 @@ db.ref('shufflecup2026').on('value', function(snap) {
 });
 firebase.auth().onAuthStateChanged(function(user) {
   currentUser = user;
+  authReady = true;
 });
 // ═══════════════════════════════════════════════════════
 // HELPERS
@@ -430,7 +431,9 @@ function showTab(t){
 // ADMIN
 // ═══════════════════════════════════════════════════════
   var currentUser = null;
+  var authReady = false;
 function openAdmin(){
+  if (!authReady) { setTimeout(openAdmin, 200); return; }
   if (firebase.auth().currentUser && !firebase.auth().currentUser.isAnonymous) {
     adminLocal = JSON.parse(JSON.stringify(state));
     document.getElementById('admin-panel').classList.remove('hidden');
