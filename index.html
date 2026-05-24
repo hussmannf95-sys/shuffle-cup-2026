@@ -472,7 +472,6 @@ function tryLogin(){
 function closeAdmin(){
   document.getElementById('login-overlay').classList.add('hidden');
   document.getElementById('admin-panel').classList.add('hidden');
-  firebase.auth().signOut();
 }
 function saveAndClose(){
   state = JSON.parse(JSON.stringify(adminLocal));
