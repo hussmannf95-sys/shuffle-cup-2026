@@ -216,6 +216,15 @@ db.ref('shufflecup2026').on('value', function(snap) {
 firebase.auth().onAuthStateChanged(function(user) {
   currentUser = user;
   authReady = true;
+  if (user && !user.isAnonymous) {
+    var overlay = document.getElementById('login-overlay');
+    if (!overlay.classList.contains('hidden')) {
+      overlay.classList.add('hidden');
+      adminLocal = JSON.parse(JSON.stringify(state));
+      document.getElementById('admin-panel').classList.remove('hidden');
+      renderAdmin();
+    }
+  }
 });
 // ═══════════════════════════════════════════════════════
 // HELPERS
