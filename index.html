@@ -214,12 +214,7 @@ db.ref('shufflecup2026').on('value', function(snap) {
   console.error('Firebase read error:', err);
 });
 firebase.auth().onAuthStateChanged(function(user) {
-  if (user && !user.isAnonymous) {
-    document.getElementById('login-overlay').classList.add('hidden');
-    adminLocal = JSON.parse(JSON.stringify(state));
-    document.getElementById('admin-panel').classList.remove('hidden');
-    renderAdmin();
-  }
+  currentUser = user;
 });
 // ═══════════════════════════════════════════════════════
 // HELPERS
@@ -434,10 +429,17 @@ function showTab(t){
 // ═══════════════════════════════════════════════════════
 // ADMIN
 // ═══════════════════════════════════════════════════════
+  var currentUser = null;
 function openAdmin(){
+  if (currentUser && !currentUser.isAnonymous) {
+    adminLocal = JSON.parse(JSON.stringify(state));
+    document.getElementById('admin-panel').classList.remove('hidden');
+    renderAdmin();
+    return;
+  }
   document.getElementById('login-overlay').classList.remove('hidden');
- document.getElementById('pw-input').value='';
-document.getElementById('email-input').value='';
+  document.getElementById('pw-input').value='';
+  document.getElementById('email-input').value='';
 }
 function tryLogin(){
   var email = document.getElementById('email-input').value;
