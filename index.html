@@ -194,7 +194,6 @@ var adminDay = 1;
 // FIREBASE
 // ═══════════════════════════════════════════════════════
 firebase.initializeApp(FB_CONFIG);
-  firebase.auth().signInAnonymously().catch(console.error);
 var db = firebase.database();
 
 db.ref('shufflecup2026').on('value', function(snap) {
@@ -214,6 +213,9 @@ db.ref('shufflecup2026').on('value', function(snap) {
   console.error('Firebase read error:', err);
 });
 firebase.auth().onAuthStateChanged(function(user) {
+  if (!user) {
+    firebase.auth().signInAnonymously().catch(console.error);
+  }
   currentUser = user;
   authReady = true;
   if (user && !user.isAnonymous) {
