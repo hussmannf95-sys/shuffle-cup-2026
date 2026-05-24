@@ -213,7 +213,14 @@ db.ref('shufflecup2026').on('value', function(snap) {
 }, function(err){
   console.error('Firebase read error:', err);
 });
-
+firebase.auth().onAuthStateChanged(function(user) {
+  if (user && !user.isAnonymous) {
+    document.getElementById('login-overlay').classList.add('hidden');
+    adminLocal = JSON.parse(JSON.stringify(state));
+    document.getElementById('admin-panel').classList.remove('hidden');
+    renderAdmin();
+  }
+});
 // ═══════════════════════════════════════════════════════
 // HELPERS
 // ═══════════════════════════════════════════════════════
