@@ -431,7 +431,7 @@ function showTab(t){
 // ═══════════════════════════════════════════════════════
   var currentUser = null;
 function openAdmin(){
-  if (currentUser && !currentUser.isAnonymous) {
+  if (firebase.auth().currentUser && !firebase.auth().currentUser.isAnonymous) {
     adminLocal = JSON.parse(JSON.stringify(state));
     document.getElementById('admin-panel').classList.remove('hidden');
     renderAdmin();
